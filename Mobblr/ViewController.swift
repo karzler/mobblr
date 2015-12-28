@@ -11,25 +11,24 @@ import UIKit
 class ViewController: UIViewController, UIPageViewControllerDataSource {
     
     var pageViewController: UIPageViewController!
-    var pageTitles: NSArray!
-    var pageImages: NSArray!
-    var pageHTMLString: String!
+    var pageHTMLString: NSArray!
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        self.pageTitles = NSArray(objects: "Post 1", "Post 2", "Post 3")
-        self.pageImages = NSArray(objects: "image1", "image2", "image3")
-        self.pageHTMLString = "<img src=\"https://apppie.files.wordpress.com/2014/09/photo-sep-14-7-40-59-pm_small1.jpg\"><br><h1>Welcome to Mobblr. Enjoy your pizza :p</h1>"
+        //var titles = NSArray(objects: "Post 1", "Post 2", "Post 3")
+        let imageContent = NSArray(objects: "https://sarahzaki.files.wordpress.com/2012/03/mobile-blogging-1.jpg", "https://w3layouts.com/wp-content/uploads/2015/07/coffee_break.jpg","http://ivinviljoen.net/wp-content/uploads/2014/11/top-10-mobile-blogging-tools-3-638_phixr.jpg")
+        let textContent = NSArray(objects: "<h1>Welcome to Mobblr</h1>", "<h1>Blogging on the Go</h1>", "<h1>Brand your blog</h1")
+        self.pageHTMLString = NSArray(objects: "<img src=\""+(imageContent[0] as! String) + "\"<br>"+(textContent[0] as! String),"<img src=\""+(imageContent[1] as! String)+"\"<br>"+(textContent[1] as! String),"<img src=\""+(imageContent[2] as! String)+"\"<br>"+(textContent[2] as! String))
         
         self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
         
-        var startVC = self.viewControllerAtIndex(0) as ContentViewController
-        var viewControllers = NSArray(object: startVC)
+        let startVC = self.viewControllerAtIndex(0) as ContentViewController
+        let viewControllers = NSArray(object: startVC)
         
-        self.pageViewController.setViewControllers(viewControllers as! [UIViewController], direction: .Forward, animated: true, completion: nil)
+        self.pageViewController.setViewControllers(viewControllers as? [UIViewController], direction: .Forward, animated: true, completion: nil)
         
         self.pageViewController.view.frame = CGRectMake(0, 30, self.view.frame.width, self.view.frame.size.height - 60)
         
@@ -48,16 +47,14 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
     
     func viewControllerAtIndex(index: Int) -> ContentViewController
     {
-        if ((self.pageTitles.count == 0) || (index >= self.pageTitles.count)) {
+        if ((self.pageHTMLString.count == 0) || (index >= self.pageHTMLString.count)) {
             return ContentViewController()
         }
         
-        var vc: ContentViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ContentViewController") as! ContentViewController
-        
-        vc.imageFile = self.pageImages[index] as! String
-        vc.titleText = self.pageTitles[index] as! String
+        let vc: ContentViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ContentViewController") as! ContentViewController
+
         vc.pageIndex = index
-        vc.HTMLString = self.pageHTMLString as! String
+        vc.HTMLString = self.pageHTMLString[index] as! String
         
         return vc
         
@@ -97,7 +94,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
         
         index++
         
-        if (index == self.pageTitles.count)
+        if (index == self.pageHTMLString.count)
         {
             return nil
         }

@@ -10,13 +10,9 @@ import UIKit
 
 class ContentViewController: UIViewController {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var webView: UIWebView!
     
     var pageIndex: Int!
-    var titleText: String!
-    var imageFile: String!
     var HTMLString: String!
     
     
@@ -25,8 +21,6 @@ class ContentViewController: UIViewController {
     {
         super.viewDidLoad()
         
-        self.imageView.image = UIImage(named: self.imageFile)
-        self.titleLabel.text = self.titleText
         self.webView.scrollView.scrollEnabled = true
         self.webView.scalesPageToFit = true
         self.webView.loadHTMLString(self.HTMLString, baseURL: nil)
