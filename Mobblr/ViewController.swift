@@ -13,6 +13,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
     var pageViewController: UIPageViewController!
     var pageTitles: NSArray!
     var pageImages: NSArray!
+    var pageHTMLString: String!
     
     override func viewDidLoad()
     {
@@ -20,6 +21,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
         
         self.pageTitles = NSArray(objects: "Post 1", "Post 2", "Post 3")
         self.pageImages = NSArray(objects: "image1", "image2", "image3")
+        self.pageHTMLString = "<img src=\"https://apppie.files.wordpress.com/2014/09/photo-sep-14-7-40-59-pm_small1.jpg\"><br><h1>Welcome to Mobblr. Enjoy your pizza :p</h1>"
         
         self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
@@ -43,13 +45,6 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func restartAction(sender: AnyObject)
-    {
-        var startVC = self.viewControllerAtIndex(0) as ContentViewController
-        var viewControllers = NSArray(object: startVC)
-        
-        self.pageViewController.setViewControllers(viewControllers as! [UIViewController], direction: .Forward, animated: true, completion: nil)
-    }
     
     func viewControllerAtIndex(index: Int) -> ContentViewController
     {
@@ -62,6 +57,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
         vc.imageFile = self.pageImages[index] as! String
         vc.titleText = self.pageTitles[index] as! String
         vc.pageIndex = index
+        vc.HTMLString = self.pageHTMLString as! String
         
         return vc
         
