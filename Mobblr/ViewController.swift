@@ -19,6 +19,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
         
         //var titles = NSArray(objects: "Post 1", "Post 2", "Post 3")
         let imageContent = NSArray(objects: "https://sarahzaki.files.wordpress.com/2012/03/mobile-blogging-1.jpg", "https://w3layouts.com/wp-content/uploads/2015/07/coffee_break.jpg","http://ivinviljoen.net/wp-content/uploads/2014/11/top-10-mobile-blogging-tools-3-638_phixr.jpg")
+        //let imageContent = NSArray(objects: "image1", "image2", "image3")
         let textContent = NSArray(objects: "<h1>Welcome to Mobblr</h1>", "<h1>Blogging on the Go</h1>", "<h1>Brand your blog</h1")
         self.pageHTMLString = NSArray(objects: "<img src=\""+(imageContent[0] as! String) + "\"<br>"+(textContent[0] as! String),"<img src=\""+(imageContent[1] as! String)+"\"<br>"+(textContent[1] as! String),"<img src=\""+(imageContent[2] as! String)+"\"<br>"+(textContent[2] as! String))
         
