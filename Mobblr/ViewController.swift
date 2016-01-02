@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
+
 
 class ViewController: UIViewController, UIPageViewControllerDataSource {
     
@@ -16,12 +19,38 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        //var bodyContent: [String] = []
+        //let parameters = ["count": 3]
+        /*Alamofire.request(.POST, "http://104.131.97.176:8000/lastn/", parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                if let value: AnyObject = response.result.value {
+                    // handle the results as JSON, without a bunch of nested if loops
+                    let post = JSON(value)
+                    for index in 0..<post.count {
+                        if let body = post[index]["title"].string {
+                            bodyContent.append(body)
+                        } else {
+                            bodyContent.append("")
+                        }
+                    }
+                    
+                }
+        }*/
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let imageContent = delegate.images
+        let textContent = delegate.bodies
+        
         
         //var titles = NSArray(objects: "Post 1", "Post 2", "Post 3")
-        let imageContent = NSArray(objects: "https://sarahzaki.files.wordpress.com/2012/03/mobile-blogging-1.jpg", "https://w3layouts.com/wp-content/uploads/2015/07/coffee_break.jpg","http://ivinviljoen.net/wp-content/uploads/2014/11/top-10-mobile-blogging-tools-3-638_phixr.jpg")
-        //let imageContent = NSArray(objects: "image1", "image2", "image3")
-        let textContent = NSArray(objects: "<h1>Welcome to Mobblr</h1>", "<h1>Blogging on the Go</h1>", "<h1>Brand your blog</h1")
-        self.pageHTMLString = NSArray(objects: "<img src=\""+(imageContent[0] as! String) + "\"<br>"+(textContent[0] as! String),"<img src=\""+(imageContent[1] as! String)+"\"<br>"+(textContent[1] as! String),"<img src=\""+(imageContent[2] as! String)+"\"<br>"+(textContent[2] as! String))
+        //let imageContent = NSArray(objects: "https://sarahzaki.files.wordpress.com/2012/03/mobile-blogging-1.jpg", "https://w3layouts.com/wp-content/uploads/2015/07/coffee_break.jpg","http://ivinviljoen.net/wp-content/uploads/2014/11/top-10-mobile-blogging-tools-3-638_phixr.jpg")
+        //let imageContent = images
+        //let textContent = NSArray(objects: "<h1>Welcome to Mobblr</h1>", "<h1>Blogging on the Go</h1>", "<h1>Brand your blog</h1")
+        //let textContent = bodies
+        for index in 0..<imageContent.count {
+            let htmlBody = "<img src=\""+imageContent[index] + "<br>" + textContent[index]
+            self.pageHTMLString.arrayByAddingObject(htmlBody)
+        }
+        //self.pageHTMLString = NSArray(objects: "<img src=\""+(imageContent[0] as! String) + "\"<br>"+(textContent[0] as! String),"<img src=\""+(imageContent[1] as! String)+"\"<br>"+(textContent[1] as! String),"<img src=\""+(imageContent[2] as! String)+"\"<br>"+(textContent[2] as! String))
         
         self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
@@ -48,6 +77,7 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
     
     func viewControllerAtIndex(index: Int) -> ContentViewController
     {
+        //print (self.pageHTMLString.count)
         if ((self.pageHTMLString.count == 0) || (index >= self.pageHTMLString.count)) {
             return ContentViewController()
         }

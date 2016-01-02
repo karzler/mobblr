@@ -7,15 +7,50 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var images: [String] = []
+    var bodies: [String] = []
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        // Testing Alamofire
+        
+        
+        let parameters = ["count": 100]
+        Alamofire.request(.POST, "http://104.131.97.176:8000/lastn/", parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                if let value: AnyObject = response.result.value {
+                    // handle the results as JSON, without a bunch of nested if loops
+                    let post = JSON(value)
+                    print(post)
+                    if let postsArray = response.result.value as? NSArray {
+                        for index in 0..<postsArray.count {
+                            if let body = postsArray[index] as? NSDictionary {
+                                if let image = body["image_url"] as? String {
+                                    self.images.append(image)
+                                } else {
+                                    self.images.append("")
+                                }
+                                if let content = body["html_body"] as? String {
+                                    self.bodies.append(content)
+                                } else {
+                                    self.bodies.append("")
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+        }
+        
         var pageControl = UIPageControl.appearance()
         pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
         pageControl.currentPageIndicatorTintColor = UIColor.blackColor()

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "AC3C2D76B9D25B8988A5D0B9C770DFEC56206BE0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "AC3C2D76B9D25B8988A5D0B9C770DFEC56206BE0" : 0,
+    "38D9009B322140394B9DA7467F68950B56B35FF5" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "45393AD5-0EE9-4524-AEEC-99AC258181B7",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "AC3C2D76B9D25B8988A5D0B9C770DFEC56206BE0" : "Mobblr\/",
+    "38D9009B322140394B9DA7467F68950B56B35FF5" : "Mobblr\/SwiftHTTP\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Mobblr",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Mobblr.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/daltoniam\/SwiftHTTP.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "38D9009B322140394B9DA7467F68950B56B35FF5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/karzler\/mobblr.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AC3C2D76B9D25B8988A5D0B9C770DFEC56206BE0"
+    }
+  ]
+}

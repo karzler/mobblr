@@ -15,8 +15,6 @@ class ContentViewController: UIViewController {
     var pageIndex: Int!
     var HTMLString: String!
     
-    
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()

@@ -1,0 +1,6 @@
+framework module Pods_Mobblr {
+  umbrella header "Pods-Mobblr-umbrella.h"
+
+  export *
+  module * { export * }
+}
