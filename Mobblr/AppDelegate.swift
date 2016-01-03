@@ -14,44 +14,16 @@ import SwiftyJSON
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var images: [String] = []
-    var bodies: [String] = []
+    var images = [String]()
+    var bodies = [String]()
+    var titles = [String]()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        // Testing Alamofire
+        // Load data
+        preloadData()
         
-        
-        let parameters = ["count": 100]
-        Alamofire.request(.POST, "http://104.131.97.176:8000/lastn/", parameters: parameters, encoding: .JSON)
-            .responseJSON { response in
-                if let value: AnyObject = response.result.value {
-                    // handle the results as JSON, without a bunch of nested if loops
-                    let post = JSON(value)
-                    print(post)
-                    if let postsArray = response.result.value as? NSArray {
-                        for index in 0..<postsArray.count {
-                            if let body = postsArray[index] as? NSDictionary {
-                                if let image = body["image_url"] as? String {
-                                    self.images.append(image)
-                                } else {
-                                    self.images.append("")
-                                }
-                                if let content = body["html_body"] as? String {
-                                    self.bodies.append(content)
-                                } else {
-                                    self.bodies.append("")
-                                }
-                            }
-                            
-                        }
-                        
-                    }
-                    
-                }
-        }
-        
-        var pageControl = UIPageControl.appearance()
+        let pageControl = UIPageControl.appearance()
         pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
         pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
         pageControl.backgroundColor = UIColor.whiteColor()
@@ -74,10 +46,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        //print(images.count)
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func preloadData() {
+        let parameters = ["count": 100]
+        Alamofire.request(.POST, "http://104.131.97.176:8000/lastn/", parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                if let value: AnyObject = response.result.value {
+                    // handle the results as JSON, without a bunch of nested if loops
+                    let posts = JSON(value)
+                    //print(posts)
+                    for index in 0..<posts.count {
+                        //print(posts[index]["image_url"])
+                        if let image = posts[index]["image_url"].string {
+                            self.images += [image]
+                            
+                        } else {
+                            self.images += [""]
+                        }
+                        if let body = posts[index]["html_body"].string {
+                            self.bodies += [body]
+                            
+                        } else {
+                            self.bodies += [""]
+                        }
+                        if let title = posts[index]["title"].string {
+                            self.titles += [title]
+                        }
+
+                    }                 
+                    
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName("imagesNotificationKey", object: nil)
+                
+        }
+
     }
 
 

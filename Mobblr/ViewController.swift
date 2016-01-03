@@ -14,59 +14,43 @@ import SwiftyJSON
 class ViewController: UIViewController, UIPageViewControllerDataSource {
     
     var pageViewController: UIPageViewController!
-    var pageHTMLString: NSArray!
+    var pageHTMLString = [String]()
+    var observer: NSObjectProtocol?
+    
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        //var bodyContent: [String] = []
-        //let parameters = ["count": 3]
-        /*Alamofire.request(.POST, "http://104.131.97.176:8000/lastn/", parameters: parameters, encoding: .JSON)
-            .responseJSON { response in
-                if let value: AnyObject = response.result.value {
-                    // handle the results as JSON, without a bunch of nested if loops
-                    let post = JSON(value)
-                    for index in 0..<post.count {
-                        if let body = post[index]["title"].string {
-                            bodyContent.append(body)
-                        } else {
-                            bodyContent.append("")
-                        }
-                    }
-                    
-                }
-        }*/
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let imageContent = delegate.images
-        let textContent = delegate.bodies
         
-        
-        //var titles = NSArray(objects: "Post 1", "Post 2", "Post 3")
-        //let imageContent = NSArray(objects: "https://sarahzaki.files.wordpress.com/2012/03/mobile-blogging-1.jpg", "https://w3layouts.com/wp-content/uploads/2015/07/coffee_break.jpg","http://ivinviljoen.net/wp-content/uploads/2014/11/top-10-mobile-blogging-tools-3-638_phixr.jpg")
-        //let imageContent = images
-        //let textContent = NSArray(objects: "<h1>Welcome to Mobblr</h1>", "<h1>Blogging on the Go</h1>", "<h1>Brand your blog</h1")
-        //let textContent = bodies
-        for index in 0..<imageContent.count {
-            let htmlBody = "<img src=\""+imageContent[index] + "<br>" + textContent[index]
-            self.pageHTMLString.arrayByAddingObject(htmlBody)
+        observer = NSNotificationCenter.defaultCenter().addObserverForName("imagesNotificationKey", object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+            let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let imageContent = delegate.images
+            let textContent = delegate.bodies
+            let titleContent = delegate.titles
+
+            for index in 0..<imageContent.count {
+                self.pageHTMLString.append("<img src=\""+(imageContent[index]) + "\"<br><strong><h2>"+titleContent[index]+"</h2></strong><br>"+(textContent[index]))
+            }
+            
+            self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
+            self.pageViewController.dataSource = self
+            
+            let startVC = self.viewControllerAtIndex(0) as ContentViewController
+            let viewControllers = NSArray(object: startVC)
+            
+            self.pageViewController.setViewControllers(viewControllers as? [UIViewController], direction: .Forward, animated: true, completion: nil)
+            
+            self.pageViewController.view.frame = CGRectMake(0, 30, self.view.frame.width, self.view.frame.size.height - 60)
+            
+            self.addChildViewController(self.pageViewController)
+            self.view.addSubview(self.pageViewController.view)
+            self.pageViewController.didMoveToParentViewController(self)
+
         }
-        //self.pageHTMLString = NSArray(objects: "<img src=\""+(imageContent[0] as! String) + "\"<br>"+(textContent[0] as! String),"<img src=\""+(imageContent[1] as! String)+"\"<br>"+(textContent[1] as! String),"<img src=\""+(imageContent[2] as! String)+"\"<br>"+(textContent[2] as! String))
-        
-        self.pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
-        self.pageViewController.dataSource = self
-        
-        let startVC = self.viewControllerAtIndex(0) as ContentViewController
-        let viewControllers = NSArray(object: startVC)
-        
-        self.pageViewController.setViewControllers(viewControllers as? [UIViewController], direction: .Forward, animated: true, completion: nil)
-        
-        self.pageViewController.view.frame = CGRectMake(0, 30, self.view.frame.width, self.view.frame.size.height - 60)
-        
-        self.addChildViewController(self.pageViewController)
-        self.view.addSubview(self.pageViewController.view)
-        self.pageViewController.didMoveToParentViewController(self)
-        
-        
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(observer!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -143,6 +127,34 @@ class ViewController: UIViewController, UIPageViewControllerDataSource {
     {
     return 0
     }*/
+    func preloadData() -> [String]{
+        var images = [String]()
+        let parameters = ["count": 100]
+        Alamofire.request(.POST, "http://104.131.97.176:8000/lastn/", parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                if let value: AnyObject = response.result.value {
+                    // handle the results as JSON, without a bunch of nested if loops
+                    let posts = JSON(value)
+                    //print(posts)
+                    for index in 0..<posts.count {
+                        //print(posts[index]["image_url"])
+                        if let image = posts[index]["image_url"].string {
+                            images += [image]
+                            print(images[index])
+                            
+                        } else {
+                            images += [""]
+                        }
+                    }
+                    
+                    
+                }
+                
+        }
+        return images
+        
+    }
+
     
 }
 
